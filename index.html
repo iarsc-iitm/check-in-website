@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-50">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IITM Alumni Check-in</title>
+  <!-- Load Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            // Use Inter as the default font
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            // Add a custom IITM blue color
+            'iitm-blue': '#005a9e',
+          }
+        },
+      },
+    }
+  </script>
+  <!-- Set Inter as the default font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    /* Add a subtle fade-in animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    /* Simple spinner for loading state */
+    .spinner {
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top: 2px solid #ffffff;
+      width: 1rem;
+      height: 1rem;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Add the SVG background pattern to the body */
+    body {
+      background-image: "bg.svg";
+    }
+  </style>
+</head>
+
+<body class="flex items-center justify-center min-h-full p-4 sm:p-6 lg:p-8 font-sans">
+  <div class="w-full max-w-md">
+
+    <!-- Main Container -->
+    <div id="app-container" class="bg-white p-6 sm:p-8 rounded-xl shadow-lg fade-in">
+      
+      <!-- Header -->
+      <div class="text-center mb-6">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">
+          Welcome, IITM Alumni!
+        </h1>
+        <p class="mt-2 text-sm text-gray-600">
+          Please fill out the form to check-in.
+        </p>
+      </div>
+
+      <!-- Check-in Form -->
+      <form id="checkin-form" class="space-y-5">
+        
+        <!-- Full Name -->
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+          <div class="mt-1">
+            <input id="name" name="name" type="text" required
+                   class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-iitm-blue focus:border-iitm-blue sm:text-sm"
+                   placeholder="e.g., Arun Kumar">
+          </div>
+        </div>
+
+        <!-- Email Address -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+          <div class="mt-1">
+            <input id="email" name="email" type="email" autocomplete="email" required
+                   class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-iitm-blue focus:border-iitm-blue sm:text-sm"
+                   placeholder="e.g., arun.k@example.com">
+          </div>
+        </div>
+
+        <!-- Batch -->
+        <div>
+          <label for="batch" class="block text-sm font-medium text-gray-700">Batch & Department</label>
+          <div class="mt-1">
+            <input id="batch" name="batch" type="text" required
+                   class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-iitm-blue focus:border-iitm-blue sm:text-sm"
+                   placeholder="e.g., B.Tech CS 2005">
+          </div>
+        </div>
+
+        <!-- Destination -->
+        <div>
+          <label for="destination" class="block text-sm font-medium text-gray-700">Destination on Campus</label>
+          <div class="mt-1">
+            <input id="destination" name="destination" type="text" required
+                   class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-iitm-blue focus:border-iitm-blue sm:text-sm"
+                   placeholder="e.g., Central Library, CS Dept.">
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+          <button id="submit-button" type="submit"
+                  class="flex w-full justify-center items-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-iitm-blue hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-iitm-blue transition-colors">
+            <span id="button-text">Check-in</span>
+            <div id="button-spinner" class="spinner hidden ml-2"></div>
+          </button>
+        </div>
+
+        <!-- Error Message Area -->
+        <div id="error-message" class="text-sm text-red-600 text-center hidden"></div>
+      </form>
+
+      <!-- Success Message -->
+      <div id="success-message" class="text-center py-10 hidden fade-in">
+        <svg class="mx-auto h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h2 class="mt-4 text-2xl font-semibold text-gray-900">Check-in Successful!</h2>
+        <p class="mt-2 text-gray-600">Thank you, and welcome to campus.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // --- THIS IS THE ONLY LINE YOU NEED TO EDIT ---
+    // 1. Deploy the Google Apps Script from Code.gs
+    // 2. Get the "Web app URL".
+    // 3. Paste the URL between the quotes below.
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxZvPKiJgJyWrcKRBUje-tX8pgrYrO5QRGKc5kFpncG9LagT-GP8gT5Q-nF10qWiIkX/exec";
+    // ------------------------------------------------
+
+    // Get all the elements we need
+    const form = document.getElementById('checkin-form');
+    const submitButton = document.getElementById('submit-button');
+    const buttonText = document.getElementById('button-text');
+    const buttonSpinner = document.getElementById('button-spinner');
+    const errorMessage = document.getElementById('error-message');
+    const successMessage = document.getElementById('success-message');
+    const appContainer = document.getElementById('app-container');
+
+    // Add a listener to the form's submit event
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault(); // Prevent the form from submitting the traditional way
+
+      // Show loading state
+      setLoading(true);
+
+      // Get the form data
+      const formData = new FormData(form);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        batch: formData.get('batch'),
+        destination: formData.get('destination'),
+      };
+
+      // Basic validation
+      if (!data.name || !data.email || !data.batch || !data.destination) {
+        showError("Please fill out all fields.");
+        setLoading(false);
+        return;
+      }
+      
+      if (WEB_APP_URL === "PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE") {
+         showError("Error: App is not configured. Please set the WEB_APP_URL.");
+         setLoading(false);
+         return;
+      }
+
+      try {
+        // Send the data to the Google Apps Script URL
+        const response = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          mode: 'cors', // Required for cross-origin requests
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8', // Apps Script needs text/plain
+          },
+          body: JSON.stringify(data), // Send data as a JSON string
+        });
+        
+        // Parse the JSON response from the Apps Script
+        const result = await response.json();
+
+        if (result.status === "success") {
+          // On success, show the success message
+          showSuccess();
+        } else {
+          // On error from the script, show the error
+          showError(result.message || "An unknown error occurred.");
+        }
+
+      } catch (error) {
+        // Handle network errors (e.g., no internet)
+        console.error("Fetch Error:", error);
+        showError("Could not connect. Please check your internet.");
+      } finally {
+        // Always turn off the loading state
+        setLoading(false);
+      }
+    });
+
+    // --- Helper Functions ---
+
+    function setLoading(isLoading) {
+      if (isLoading) {
+        submitButton.disabled = true;
+        buttonText.classList.add('hidden');
+        buttonSpinner.classList.remove('hidden');
+        errorMessage.classList.add('hidden');
+      } else {
+        submitButton.disabled = false;
+        buttonText.classList.remove('hidden');
+        buttonSpinner.classList.add('hidden');
+      }
+    }
+
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.classList.remove('hidden');
+    }
+
+    function showSuccess() {
+      // Hide the form and show the success message
+      form.classList.add('hidden');
+      successMessage.classList.remove('hidden');
+      
+      // We can also change the header for a nice final touch
+      const headerTitle = appContainer.querySelector('h1');
+      const headerSubtitle = appContainer.querySelector('p');
+      headerTitle.textContent = "All Set!";
+      headerSubtitle.textContent = "Enjoy your visit.";
+    }
+  </script>
+
+</body>
+</html>
